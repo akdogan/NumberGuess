@@ -1,20 +1,20 @@
 import kotlin.random.Random
+
 val range = 1..50
 const val maxTries = 5
 
-fun main(args: Array<String>) {
+fun main() {
     evaluation(playGuessingGame())
 }
 
-fun playGuessingGame(): Boolean{
+fun playGuessingGame(): Boolean {
     val numberToGuess = Random.nextIntInRange(range)
     var tries = 0
-    var running = true
-    while (true){
-        var guess = getUserGuess(maxTries - tries)
+    while (true) {
+        val guess = getUserGuess(maxTries - tries)
         when {
             guess == numberToGuess -> return true
-            guess <  numberToGuess -> {
+            guess < numberToGuess -> {
                 println("Your guess is too low")
             }
             guess > numberToGuess -> {
@@ -26,19 +26,22 @@ fun playGuessingGame(): Boolean{
     }
 }
 
-fun evaluation(b: Boolean){
+fun evaluation(b: Boolean) {
     if (b) println("Congratulations, your guess was correct") else println("Sorry, you ran out of tries")
 }
 
-fun getUserGuess(triesLeft: Int) : Int{
-    do{
+fun getUserGuess(triesLeft: Int): Int {
+    do {
         println("Enter your guess between ${range.first} and ${range.last} -- you have $triesLeft tries left")
-        var guess = readLine()!!
-        if (guess.isValidInput()) return guess.toInt() else println("Invalid input")
-    }
-    while (true)
+        val guess = readLine()
+        if (guess != null && guess.isValidInput()) {
+            return guess.toInt()
+        } else {
+            println("Invalid input")
+        }
+    } while (true)
 }
 
 fun String.isValidInput() : Boolean = this.toIntOrNull() != null && this.toInt() in range
 
-fun Random.nextIntInRange(range : IntRange): Int = this.nextInt(range.last - range.first + 1) + range.first
+fun Random.nextIntInRange(range: IntRange): Int = this.nextInt(range.last - range.first + 1) + range.first
